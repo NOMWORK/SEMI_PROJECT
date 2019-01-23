@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.mapper">
+
+<!-- 
+TITLENO NUMBER PRIMARY KEY,
+USERNO NUMBER, 
+BOARDNO NUMBER,
+ANSWERSQ NUMBER NOT NULL,
+TITLE VARCHAR2(100) NOT NULL,
+CONTENT VARCHAR2(2000) NOT NULL,
+DELFLAG VARCHAR2(1),
+REGDATE DATE NOT NULL,
+MAPNO NUMBER,
+FILENO NUMBER,  -->
+
+	<resultMap type="ChatBoardDto" id="myMap">
+		<result property="titleno" column="TITLENO"/>
+		<result property="userno" column="USERNO"/>
+		<result property="projectno" column="PROJECTNO"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="delflag" column="DELFLAG"/>
+		<result property="regdate" column="REGDATE"/>
+		<result property="mapno" column="MAPNO"/>
+		<result property="fileno" column="FILENO"/>
+	</resultMap>
+	
+	<resultMap type="FileDBDto" id="myFile">
+		<result property="fileno" column="FILENO"/>
+		<result property="files" column="FILES"/>
+		<result property="filetitle" column="FILETITLE"/>
+	</resultMap>
+	
+	<select id="selectprojectno" resultType="com.dto.ChatBoardDto">
+		SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND PROJECTNO = #{projectno}
+	</select>
+	
+	<select id="selectcountall" resultType="int">
+		SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno}
+	</select>
+	
+	<select id="selectten" resultType="com.dto.ChatBoardDto" parameterType="ChatBoardDto">
+		SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE 
+		WHERE DELFLAG='N' AND PROJECTNO = 1 AND
+		TITLENO BETWEEN (SELECT GREATEST(MAX(titleno)-(#{titleno}*10)+1,1) FROM CHATTITLE) AND (SELECT MAX(titleno)-(#{titleno}-1)*10 FROM CHATTITLE)
+		ORDER BY TITLENO DESC
+	</select>
+	
+	<insert id="insertcontent" parameterType="ChatBoardDto">
+		INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, 'TITLE',  #{content}, SYSDATE)
+	</insert>
+	
+	<select id="selectBoardlist" resultType="com.dto.ChatBoardDto">
+		SELECT TITLENO, USERNO, PROJECTNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N'
+	</select>
+	
+	<select id="selectBoardone" resultType="com.dto.ChatBoardDto">	
+		SELECT USERNO, TITLE, CONTENT, REGDATE, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND TITLENO = #{titleno}
+	</select>
+	
+	<insert id="writeBoard" parameterType="ChatBoardDto">
+		INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, #{title},  #{content}, 'N', SYSDATE, null, #{fileno})
+	</insert>
+	
+	<update id="multiDelete" parameterType="map">
+		UPDATE CHATTITLE SET DELFLAG = 'Y' WHERE TITLENO IN <foreach collection="titlenos" item="titleno" open="(" separator="," close=")">#{titleno}</foreach>
+	</update>
+	
+	<insert id="writeBoardfile" parameterType="FileDBDto">
+		INSERT INTO FILEDB VALUES(FILENOSEQ.NEXTVAL, #{files},#{filetitle})
+	</insert>
+	
+	<select id="selectBoardfileno" resultType="int">
+		SELECT MAX(FILENO) FROM FILEDB
+	</select>
+	
+	<select id="selectBoardfileone" resultType="com.dto.FileDBDto">
+		SELECT FILETITLE FROM FILEDB WHERE FILENO = #{fileno}
+	</select>
+</mapper>
