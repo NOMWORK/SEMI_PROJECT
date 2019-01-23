@@ -3,29 +3,27 @@ package com.nomwork.board.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.ibatis.session.SqlSession;
-
 import com.nomwork.board.dto.ChatBoardDto;
 import com.nomwork.board.dto.FileDBDto;
+import com.nomwork.mybatis.SqlMapConfig;
 
 public class ChatBoardDao extends SqlMapConfig{
 	
-	private String namespace="com.my.mapper.";
-	
+	private String namespace = "";
+	private SqlSession session;
 	//승혜파트-----------------
 
 	public List<ChatBoardDto> selectProjectno(int projectno){
-		SqlSession session = null;
+
 		List<ChatBoardDto> list = null;
 		session = getSqlSessionFactory().openSession(true);
 		
-		list = session.selectList(namespace + "selectprojectno", projectno);
+		list = session.selectList("selectprojectno", projectno);
 		return list;
 	}
 	
 	public int insertContent(ChatBoardDto dto) {
-		SqlSession session = null;
 		int result = 0;
 		session = getSqlSessionFactory().openSession(true);
 		result = session.insert(namespace + "insertContent", dto);
@@ -33,16 +31,16 @@ public class ChatBoardDao extends SqlMapConfig{
 		
 	}
 	public int selectcountall(int projectno) {
-		SqlSession session = null;
 		int countall = 0;
 		session = getSqlSessionFactory().openSession(true);
-		countall = session.selectOne(namespace + "selectcountall", 1);
+		System.out.println(session);
+		countall = session.selectOne("selectcountall", projectno );
+		System.out.println(countall);
 		return countall;
 		
 	}
 	
 	public List<ChatBoardDto> selectTen(int projectno, int pageno){
-		SqlSession session = null;
 		List<ChatBoardDto> list = null;
 		session = getSqlSessionFactory().openSession(true);
 		ChatBoardDto dto = new ChatBoardDto();
@@ -56,7 +54,6 @@ public class ChatBoardDao extends SqlMapConfig{
 	
 	//게시판-승빈파트-------------------------------------------------
 	public List<ChatBoardDto> selectBoardlist(){
-		SqlSession session = null;
 		List<ChatBoardDto> list = null;
 		
 		session = getSqlSessionFactory().openSession(true);
@@ -67,7 +64,6 @@ public class ChatBoardDao extends SqlMapConfig{
 	}
 	
 	public ChatBoardDto selectBoardone(int titleno) {
-		SqlSession session = null;
 		ChatBoardDto res = null;
 		
 		session = getSqlSessionFactory().openSession(true);
@@ -77,7 +73,6 @@ public class ChatBoardDao extends SqlMapConfig{
 	}
 	
 	public int writeBoard(ChatBoardDto dto) {
-		SqlSession session = null;
 		int res = 0;
 		
 		session = getSqlSessionFactory().openSession(true);
@@ -91,8 +86,6 @@ public class ChatBoardDao extends SqlMapConfig{
 		
 		Map<String,String[]> map = new HashMap<String,String[]>();
 		map.put("titlenos", titleno);
-		
-		SqlSession session = null;
 		
 		try {
 			session = getSqlSessionFactory().openSession(true);
@@ -111,7 +104,6 @@ public class ChatBoardDao extends SqlMapConfig{
 	}
 	
 	public int writeBoardfile(FileDBDto dto) {
-		SqlSession session = null;
 		int res = 0;
 		
 		session = getSqlSessionFactory().openSession(true);
@@ -121,7 +113,6 @@ public class ChatBoardDao extends SqlMapConfig{
 	}
 	
 	public int selectBoardfileno() {
-		SqlSession session = null;
 		int res = 0;
 		
 		session = getSqlSessionFactory().openSession(true);
@@ -131,7 +122,6 @@ public class ChatBoardDao extends SqlMapConfig{
 	}
 	
 	public FileDBDto selectBoardfileone(int fileno) {
-		SqlSession session = null;
 		FileDBDto res = null;
 		
 		session = getSqlSessionFactory().openSession(true);

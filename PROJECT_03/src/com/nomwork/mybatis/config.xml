@@ -9,6 +9,8 @@
 		<typeAlias type="com.nomwork.project.dto.Project_CreateDto" alias="Project_CreateDto" />
 		<typeAlias type="com.nomwork.channel.dto.ChannelDto" alias="ChannelDto"/>
 		<typeAlias type="com.nomwork.channel.dto.Channel_CreateDto" alias="Channel_CreateDto"/>
+		<typeAlias type="com.nomwork.board.dto.ChatBoardDto" alias="ChatBoardDto"/>
+		<typeAlias type="com.nomwork.board.dto.FileDBDto" alias="FileDBDto"/>
 	</typeAliases>
 
 	<environments default="development">
