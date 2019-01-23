@@ -30,7 +30,7 @@ import com.nomwork.project.dto.Project_CreateDto;
 import com.nomwork.user.dao.UserDao;
 import com.nomwork.user.dto.UserDto;
 
-@WebServlet("/UserServlet")
+@WebServlet("/MembersServlet")
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -198,14 +198,14 @@ public class UserServlet extends HttpServlet {
 			}
 
 		} // 이메일을 통한 회원정보 조회
-		else if (command.equals("search_user_by_email")) {
+		else if (command.equals("search_userinfo")) {
 
 			String useremail = request.getParameter("useremail");
 			//
 			udto = U_DAO.select(useremail);
 			//
 			request.setAttribute("udto", udto);
-			dispatch(request, response, "project/search_user_by_email.jsp");
+			dispatch(request, response, "search_user.jsp");
 
 		} // 비밀번호 찾기 기능
 		else if (command.equals("forgetpw")) {
@@ -279,9 +279,11 @@ public class UserServlet extends HttpServlet {
 			String username = request.getParameter("username");
 			String userurl = request.getParameter("userurl");
 
-			if (useremail == null || useremail.equals("undefined")) {
+			if (useremail == null) {
 				//카카오 로그인 시, 이메일이 null값이면 고유아이디를 이메일 형식으로 가져온다.
 				useremail = userpw + "@kakao.com";
+			} else if (useremail != null) {
+				useremail = useremail;
 			}
 
 			udto = new UserDto(useremail, userpw, username, userurl);
@@ -325,6 +327,15 @@ public class UserServlet extends HttpServlet {
 			}
 
 
+		} // 이메일을 통한 회원정보 검색
+		else if (command.equals("search_userinfo")) {
+
+			String useremail = request.getParameter("useremail");
+
+			udto = U_DAO.select(useremail);
+			//
+			request.setAttribute("udto", udto);
+			dispatch(request, response, "search_user.jsp");
 		}
 	}
 
