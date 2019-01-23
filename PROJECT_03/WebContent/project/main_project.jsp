@@ -340,7 +340,7 @@
    		</div>
    		<!-- 프로필 이름 가져오기 -->
    		<div class="topside-4">
-   			<%=pdto.getPname() %>
+   			<%=udto.getUsername() %>
    		</div>
    		
    		<div class="topside-5">
@@ -393,7 +393,7 @@
     	<br>
     	<hr>
        	<div class="labels">
-       		<div>멤버<div id="plus"></div></div>
+       		<div>멤버<div id="plus" onclick="location.href='Project.ho?command=to_project_add_user'"></div></div>
        	</div>
        	<div class="member_wrapper">
     		<ul class="member">
