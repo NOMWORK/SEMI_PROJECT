@@ -61,7 +61,7 @@ public class ChannelServlet extends HttpServlet {
 		if(command.equals("to_add_channel")) {
 			response.sendRedirect("channel/add_channel.jsp");
 		} //채널 생성
-		else if (command.equals("channel_add")) { 	
+		else if (command.equals("add_channel")) { 	
 		
 			//생성할 채널의 이름과 유저 목록 받아오기
 			String[] add_channel_user_list = request.getParameterValues("checked_userno");
@@ -90,16 +90,16 @@ public class ChannelServlet extends HttpServlet {
 					if(!(insert_channel_create_res>0)) {
 						
 						//이미 생성된 CHANNEL 테이블 삭제할 것 (미구현)
-						response.sendRedirect("add_channel.jsp");
+						response.sendRedirect("channel/add_channel.jsp");
 					}
 				}
 				//채널 테이블 생성 실패시
-			} else response.sendRedirect("add_channel.jsp");
+			} else response.sendRedirect("channel/add_channel.jsp");
 			cdtos = C_DAO.select(c_cdto);
 			
 			//채널 목록 세션 최신화
 			session.setAttribute("cdtos", cdtos);
-			dispatch(request, response, "project.jsp");
+			dispatch(request, response, "project/main_project.jsp");
 			
 		}
 	}

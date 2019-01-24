@@ -9,8 +9,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
-  <!-- 컨테이너 서블릿 설정 -->
   <servlet>
     <servlet-name>user</servlet-name>
     <servlet-class>com.nomwork.user.web.UserServlet</servlet-class>
@@ -34,5 +32,13 @@
   <servlet-mapping>
     <servlet-name>channel</servlet-name>
     <url-pattern>/Channel.ho</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ChatMVC</servlet-name>
+   	<servlet-class>com.nomwork.board.controller.ChatBoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChatMVC</servlet-name>
+    <url-pattern>/ChatBoardServlet.do</url-pattern>
   </servlet-mapping>
 </web-app>
