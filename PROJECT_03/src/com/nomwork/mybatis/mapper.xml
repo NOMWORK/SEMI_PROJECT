@@ -390,11 +390,12 @@
       ORDER BY TITLENO DESC
    </select>
    
+    <!-- 게시판 페이지 번호 검색 -->
     <select id="searchcountall" parameterType="ChatBoardDto" resultType="int">
-      SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno}
+      SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno} AND CONTENT = #{content}
    </select>
    
-   <!-- 게시판 내 게시물 10개 출력 -->
+   <!-- 게시판 내 게시물 10개 검색 -->
    <select id="searchten" resultType="ChatBoardDto" parameterType="ChatBoardDto">
       SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE 
       WHERE DELFLAG='N' AND PROJECTNO = 1 AND
