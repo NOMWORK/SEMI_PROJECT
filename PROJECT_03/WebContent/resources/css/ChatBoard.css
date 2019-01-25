@@ -32,8 +32,8 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
-/*display: none, position:absolute. 특占쏙옙 占쌉뤄옙창占쏙옙*/
-/*----占쏙옙占쏙옙---*/
+/*display: none, position:absolute. 占쎈뱟占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈셾筌뚭쑴�굲筌≪뜴�쐻占쎈짗占쎌굲*/
+/*----占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲---*/
 .attach-title{
 	padding: 8px;
 	font-size: 21px;
@@ -70,10 +70,10 @@ html, body {
 	border: 1px solid #c8c8c8;
 	background-color: #fff;
 }
-/*----/占쏙옙占쏙옙---*/
+/*----/占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲---*/
 
 
-/*占쏙옙크占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙*/
+/*占쎈쐻占쎈짗占쎌굲占쎄쾿占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲*/
 .insert-link-text{
 	position: absolute;
 	flex-direction: column;
@@ -156,10 +156,10 @@ html, body {
 	background-color: #0093c4;
 }
 
-/*--------占쏙옙크占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙----------*/
+/*--------占쎈쐻占쎈짗占쎌굲占쎄쾿占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲----------*/
 
 
-/*------占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙--------*/
+/*------占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲--------*/
 .insert-video{
 	position: absolute;
 	flex-direction: column;
@@ -190,9 +190,9 @@ html, body {
 	width: 500px;
 	overflow: hidden;
 }
-/*------/占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙---------*/
+/*------/占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲---------*/
 
-/*------占쏙옙占쏙옙占쏙옙占쏙옙--------*/
+/*------占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲--------*/
 .insert-map{
 	position: absolute;
 	flex-direction: column;
@@ -247,9 +247,9 @@ html, body {
 	background-color: gray;
 }
 
-/*-------/占쏙옙占쏙옙占쏙옙占쏙옙--------*/
+/*-------/占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲--------*/
 
-/*-------占쏙옙占싹곤옙占쏙옙----------*/
+/*-------占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈뼣�ⓦ끉�굲占쎈쐻占쎈짗占쎌굲----------*/
 .insert-file{
 	position: absolute;
 	flex-direction: column;
@@ -271,7 +271,7 @@ html, body {
 .file-size{
 	font-size: 12px;
 }
-/*-------/占쏙옙占싹곤옙占쏙옙--------*/
+/*-------/占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈뼣�ⓦ끉�굲占쎈쐻占쎈짗占쎌굲--------*/
 
 /*end of special input window*/
 
@@ -328,7 +328,7 @@ a {
 	border: 1px solid #ebebeb;
 	border-radius: 50%;
 }
-.topside-3 > img{
+.topside-3 img{
 	width: inherit;
 }
 .topside-4{
@@ -409,7 +409,7 @@ a {
 	z-index: 9;
 }
 
-.leftside-1>div>img {
+.leftside-1>div img {
 	width: inherit;
 }
 
@@ -448,7 +448,7 @@ a {
 	margin-bottom: 4px;
 }
 
-.leftside-share>img {
+.leftside-share img {
 	padding: 7px;
 	padding-right: 5px;
 	width: 20px;
@@ -482,7 +482,7 @@ a {
 	transform: scale(1.1, 1.1);
 }
 
-#plus { /*占쏙옙占쏙옙 占쏙옙 첨占싸뱄옙튼*/
+#plus { /*占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲 筌ｂ벂�쐻占쎈뼢獄�袁⑹굲占쎈뱣*/
 	margin: 5px;
 	display: inline-flex;
 	height: 20px;
@@ -494,7 +494,7 @@ a {
 	margin: 5px;
 }
 
-#plus::after { /*+占쏙옙*/
+#plus::after { /*+占쎈쐻占쎈짗占쎌굲*/
 	content: " ";
 	position: absolute;
 	display: block;
@@ -506,7 +506,7 @@ a {
 	z-index: 9;
 }
 
-#plus::before { /*+占쏙옙*/
+#plus::before { /*+占쎈쐻占쎈짗占쎌굲*/
 	content: " ";
 	position: absolute;
 	display: block;
@@ -619,7 +619,7 @@ a {
 	left: 10px;
 }
 
-.inputwrapper { /*占쌉뤄옙창*/
+.inputwrapper { /*占쎈쐻占쎈셾筌뚭쑴�굲筌∽옙*/
 	order: 2;
 	display: flex;
 	align-items: flex-end;
@@ -631,7 +631,7 @@ a {
 .input-dropup{
 	position: relative;
 }
-.input-dropmenu{/*첨占싸뱄옙튼 클占쏙옙占쏙옙 占쌩댐옙 창*/
+.input-dropmenu{/*筌ｂ벂�쐻占쎈뼢獄�袁⑹굲占쎈뱣 占쎄깻占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈솯占쎈솇占쎌굲 筌∽옙*/
   position: absolute;
   bottom: 100%;
   z-index: 100;
@@ -656,7 +656,7 @@ a {
 .dropmenu:hover {
 	background-color: #d5d5d5;
 }
-.input-dropbtn { /*占쏙옙占쏙옙 占쏙옙 첨占싸뱄옙튼*/
+.input-dropbtn { /*占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲 筌ｂ벂�쐻占쎈뼢獄�袁⑹굲占쎈뱣*/
 	order: 1;
 	z-index: 5;
 	display: block;
@@ -675,7 +675,7 @@ a {
 	background: #dbdbdb;
 }
 
-.input-dropbtn::after { /*+占쏙옙*/
+.input-dropbtn::after { /*+占쎈쐻占쎈짗占쎌굲*/
 	content: " ";
 	position: absolute;
 	display: block;
@@ -687,7 +687,7 @@ a {
 	z-index: 9;
 }
 
-.input-dropbtn::before { /*+占쏙옙*/
+.input-dropbtn::before { /*+占쎈쐻占쎈짗占쎌굲*/
 	content: " ";
 	position: absolute;
 	display: block;
@@ -699,7 +699,7 @@ a {
 	z-index: 9;
 }
 
-.input_text { /*占쏙옙占쏙옙韜占� 占쏙옙 占쌉뤄옙창*/
+.input_text { /*占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎌쐶占쎈쐻�뜝占� 占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈셾筌뚭쑴�굲筌∽옙*/
 	order: 2;
 	padding: 10px;
 	border: 1px solid #b6b6b6;
@@ -782,7 +782,7 @@ a {
 	width: inherit;
 }
 
-.board-context { /*占쌜쇽옙占쏙옙+占쏙옙占쏙옙*/
+.board-context { /*占쎈쐻占쎈솙占쎈닰占쎌굲占쎈쐻占쎈짗占쎌굲+占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲*/
 	order: 2;
 	height: 100%;
 	display: flex;
@@ -791,14 +791,14 @@ a {
 	word-break: keep-all;
 }
 
-.board-writer { /*占쌜쇽옙占쏙옙*/
+.board-writer { /*占쎈쐻占쎈솙占쎈닰占쎌굲占쎈쐻占쎈짗占쎌굲*/
 	order: 1;
 	font-weight:700;
 	margin-left: 10px;
 	font-weight: 600;
 }
 
-.board-content { /*占쏙옙占쏙옙*/
+.board-content { /*占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲*/
 	margin-top: 5px;
 	margin-left: 12px;
 	order: 2;
@@ -807,7 +807,7 @@ a {
 	word-break: keep-all;
 }
 
-.board-reply { /*占쏙옙占�*/
+.board-reply { /*占쎈쐻占쎈짗占쎌굲占쎈쐻�뜝占�*/
 	border-top: 1px solid #c8c8c8;
 	display: flex;
 	width: inherit;
@@ -837,7 +837,7 @@ a {
 	word-break: keep-all;
 }
 
-.board-insertReply { /*占쏙옙占쏙옙韜占�*/
+.board-insertReply { /*占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎌쐶占쎈쐻�뜝占�*/
 	padding: 10px;
 	display: flex;
 	align-items: flex-end;
@@ -864,7 +864,7 @@ a {
 	padding: 4px;
 }
 
-.reply-dropbtn { /*占쏙옙占쏙옙韜占� 占쏙옙 첨占싸뱄옙튼*/
+.reply-dropbtn { /*占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎌쐶占쎈쐻�뜝占� 占쎈쐻占쎈짗占쎌굲 筌ｂ벂�쐻占쎈뼢獄�袁⑹굲占쎈뱣*/
 	order: 1;
 	z-index: 5;
 	display: block;
@@ -884,7 +884,7 @@ a {
 	background : #c8c8c8;
 }
 
-.reply-dropbtn::after { /*+占쏙옙*/
+.reply-dropbtn::after { /*+占쎈쐻占쎈짗占쎌굲*/
 	content: " ";
 	position: absolute;
 	display: block;
@@ -896,7 +896,7 @@ a {
 	z-index: 9;
 }
 
-.reply-dropbtn::before { /*+占쏙옙*/
+.reply-dropbtn::before { /*+占쎈쐻占쎈짗占쎌굲*/
 	content: " ";
 	position: absolute;
 	display: block;
@@ -908,7 +908,7 @@ a {
 	z-index: 9;
 }
 
-.reply-input { /*占쏙옙占쏙옙韜占� 占쏙옙 占쌉뤄옙창*/
+.reply-input { /*占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎌쐶占쎈쐻�뜝占� 占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈셾筌뚭쑴�굲筌∽옙*/
 	word-break: break-word;
 	order: 2;
 	padding: 10px;

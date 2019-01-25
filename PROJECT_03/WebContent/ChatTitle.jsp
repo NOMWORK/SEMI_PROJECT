@@ -41,9 +41,9 @@
 	});
 	
 	// detail
-	function detailBoard(titleno){
+	function detailBoard(boardno){
 		$.ajax({
-			url : "ChatBoardServlet.do?command=detailboard&titleno="+titleno,
+			url : "ChatBoardServlet.do?command=detailboard&boardno="+boardno,
 			dataType:"json",
 			success:function(msg){
 				var filetitle = decodeURIComponent(msg.filetitle);
@@ -271,8 +271,8 @@
 		    				<c:forEach items="${titlelist }" var="title">
 			    				<tr>
 			    					<td><input type="checkbox" name="chk" value="" /></td>
-			    					<th scope="row">${title.titleno }</th>
-			    					<td><a href="javascript:detailBoard(${title.titleno });">${title.title}</a></td>
+			    					<th scope="row">${title.boardno }</th>
+			    					<td><a href="javascript:detailBoard(${title.boardno });">${title.boardtitle}</a></td>
 			    					<th scope="row"><fmt:formatDate pattern = "yy/MM/dd" value = "${title.regdate }" /></th>
 			    					<td></td>
 			    				</tr>

@@ -434,7 +434,7 @@
 	   		</div>
    		</div>
     	<div class="leftside-share"><img src="http://simpleicon.com/wp-content/uploads/Calendar-1.png">공유캘린더</div>
-    	<div class="leftside-share"><a href="ChatBoardServlet.do?command=selectTen&projectno=<%=pdto.getPno() %>&pageno=1"><img src="https://img.icons8.com/metro/50/000000/edit-property.png">공유게시판</a></div>
+    	<div class="leftside-share"><img src="https://img.icons8.com/metro/50/000000/edit-property.png"><a href="ChatBoardServlet.do?command=selectTen&projectno=<%=pdto.getPno() %>&pageno=1">공유게시판</a></div>
     	<br>
     	<hr>
     	

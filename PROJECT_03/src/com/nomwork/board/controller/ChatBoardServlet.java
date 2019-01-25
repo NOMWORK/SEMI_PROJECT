@@ -67,7 +67,7 @@ public class ChatBoardServlet extends HttpServlet {
 		
 		if(command.equals("pagechange")) {
 			int projectno = 1;
-			int titleno = 2;
+			int boardno = 2;
 			PrintWriter out = response.getWriter();
 			List<ChatBoardDto> titlelist = dao.selectProjectno(projectno);
 			request.setAttribute("titlelist", titlelist);
@@ -143,8 +143,8 @@ public class ChatBoardServlet extends HttpServlet {
 			dispatch(request, response, "LayoutBoard.jsp");
 		}*/ else if(command.equals("detailboard")) {
 			
-			int titleno = Integer.parseInt(request.getParameter("titleno"));
-			ChatBoardDto dto = dao.selectBoardone(titleno);
+			int boardno = Integer.parseInt(request.getParameter("boardno"));
+			ChatBoardDto dto = dao.selectBoardone(boardno);
 		
 			PrintWriter pw = response.getWriter();			
 			JSONObject obj = new JSONObject();

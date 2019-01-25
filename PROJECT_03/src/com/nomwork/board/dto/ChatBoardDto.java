@@ -3,7 +3,7 @@ package com.nomwork.board.dto;
 import java.util.Date;
 
 public class ChatBoardDto {
-/*	TITLENO NUMBER PRIMARY KEY,
+/*	boardno NUMBER PRIMARY KEY,
 	USERNO NUMBER, 
 	projectno NUMBER,
 	ANSWERSQ NUMBER NOT NULL,

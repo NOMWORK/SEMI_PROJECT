@@ -374,12 +374,12 @@
    
    <!-- 게시판 전체출력 -->
    <select id="selectprojectno" resultType="ChatBoardDto">
-      SELECT BOARDNO, USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND PROJECTNO = #{projectno}
+      SELECT BOARDNO, USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, MAPNO, FILENO FROM BOARD WHERE DELFLAG='N' AND PROJECTNO = #{projectno}
    </select>
    
    <!-- 게시판 페이지 번호 출력 -->
    <select id="selectcountall" parameterType="int" resultType="int">
-      SELECT COUNT(BOARDNO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno}
+      SELECT COUNT(BOARDNO) FILENO FROM BOARD WHERE PROJECTNO = #{projectno}
    </select>
    
    <!-- 게시판 내 게시물 10개 출력 -->
@@ -389,12 +389,12 @@
 	ORDER BY BOARDNO) WHERE rn BETWEEN 
 	(SELECT GREATEST(MAX(rn)-(#{boardno}*10)+1,1) FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno})) 
 	AND (SELECT MAX(rn)-(#{boardno}-1)*10 FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno}))
-	ORDER BY rn DESC;
+	ORDER BY rn DESC
    </select>
    
     <!-- 게시판 페이지 번호 검색 -->
     <select id="searchcountall" parameterType="ChatBoardDto" resultType="int">
-      SELECT COUNT(BOARDNO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno} AND BOARDCONTENT = #{boardcontent}
+      SELECT COUNT(BOARDNO) FILENO FROM BOARD WHERE PROJECTNO = #{projectno} AND BOARDCONTENT = #{boardcontent}
    </select>
    
    <!-- 게시판 내 게시물 10개 검색 -->
@@ -404,12 +404,12 @@
 	AND BOARDCONTENT LIKE #{boardcontent} ORDER BY BOARDNO) WHERE rn BETWEEN
 	(SELECT GREATEST(MAX(rn)-(#{boardno}*10)+1,1) FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno} AND BOARDCONTENT LIKE #{boardcontent})) 
 	AND (SELECT MAX(rn)-(#{boardno}-1)*10 FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno} AND BOARDCONTENT LIKE #{boardcontent}))
-	ORDER BY rn DESC;
+	ORDER BY rn DESC
    </select>
    
    <!-- 게시물 1개 출력 -->
    <select id="selectBoardone" resultType="ChatBoardDto">   
-      SELECT USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND BOARDNO = #{boardno}
+      SELECT USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, FILENO FROM BOARD WHERE DELFLAG='N' AND BOARDNO = #{boardno}
    </select>
    
    <!-- 게시물 입력 -->

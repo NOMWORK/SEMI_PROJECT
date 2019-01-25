@@ -90,11 +90,11 @@ public class ChatBoardDao extends SqlMapConfig{
 		return list;
 	}
 	
-	public ChatBoardDto selectBoardone(int titleno) {
+	public ChatBoardDto selectBoardone(int boardno) {
 		ChatBoardDto res = null;
 		
 		session = getSqlSessionFactory().openSession(true);
-		res = session.selectOne("selectBoardone", titleno);
+		res = session.selectOne("selectBoardone", boardno);
 		
 		return res;
 	}
@@ -108,17 +108,17 @@ public class ChatBoardDao extends SqlMapConfig{
 		return res;
 	}
 	
-	public int multiDelete(String[] titleno) {
+	public int multiDelete(String[] boardno) {
 		int count = 0;
 		
 		Map<String,String[]> map = new HashMap<String,String[]>();
-		map.put("titlenos", titleno);
+		map.put("boardnos", boardno);
 		
 		try {
 			session = getSqlSessionFactory().openSession(true);
 			count = session.delete("multiDelete", map);
 			
-			if(count==titleno.length) {
+			if(count==boardno.length) {
 				session.commit();
 			}
 		}catch(Exception e) {
