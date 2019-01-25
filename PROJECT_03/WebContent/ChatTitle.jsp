@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<% int projectno = Integer.parseInt(request.getParameter("projectno"));%>
 <% int pageno = Integer.parseInt(request.getParameter("pageno")); %>
 <!DOCTYPE html>
 <html>
@@ -10,35 +11,15 @@
 <link rel="stylesheet" type="text/css" href="resources/css/ChatTitle.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-$(function() {
-    /*insert-main*/
-    $(".on").click(function(){
-
-    });
-});
-    
-function pagechange(pagenumber) {
- 	$.ajax({
-		url:"ChatBoardServlet?command=pagechange",
-		dataType:"text",
-		success:function(msg){
-	    	$(".titlelist").html(
-		        	"<c:forEach items='${titlelist }' var='title'>"
-    					+"<tr>"
-						+"<td><input type='checkbox' name='chk' value='' /></td>"
-						+"<th scope='row'>${title.userno }</th>"
-						+"<td>${title.title}</td>"
-						+"<th scope='row'><fmt:formatDate pattern = 'yy/MM/dd' value = '${title.regdate }' /></th>"
-						+"<td>itworks</td>"
-					+"</tr>"
-				+"</c:forEach>"
-		   	);
-		},
-		error:function(){
-			alert("서블렛 오류");
-		}
- 	})
-}
+	$(function() {
+	    
+	    $("#search").click(function(){
+	    	var txt = $("#search_input").val();
+	    	var url = "ChatBoardServlet.do?command=search_title&projectno="+<%=projectno%>+"&pageno=1&searchtxt="+txt;
+	    	window.location.href = url;
+	    	return false;
+	    });
+	});
 
 	//승빈
 	// 모두 체크
@@ -286,24 +267,17 @@ function pagechange(pagenumber) {
 		    					<th scope="col">첨부파일</th>
 		    				</tr>
 		    			</thead>
-		    			<tbody>
-							<c:choose>
-								<c:when test="${empty titlelist }">
-									<td colspan="5">----------작성된 글이 없습니다----------</td>
-								</c:when>
-								<c:otherwise>
-									<c:forEach items="${titlelist }" var="dto">
-										<tr>
-											<td><input type="checkbox" name="chk" value="${dto.titleno}" /></td>
-											<th scope="row">${dto.userno }</th>
-											<td><a href="javascript:detailBoard(${dto.titleno });">${dto.title }</a></td>
-											<th scope="row"><fmt:formatDate pattern = "yy/MM/dd" value = "${dto.regdate }" /></th>
-											<td><c:if test="${dto.fileno ne '0'}"><img id="clip_img" src="resources/image/clip.png"/></c:if></td>
-											
-										</tr>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
+						<tbody class="titlelist">
+		    				<c:forEach items="${titlelist }" var="title">
+			    				<tr>
+			    					<td><input type="checkbox" name="chk" value="" /></td>
+			    					<th scope="row">${title.titleno }</th>
+			    					<td><a href="javascript:detailBoard(${title.titleno });">${title.title}</a></td>
+			    					<th scope="row"><fmt:formatDate pattern = "yy/MM/dd" value = "${title.regdate }" /></th>
+			    					<td></td>
+			    				</tr>
+		    				</c:forEach>
+
 		    			</tbody>
 		    			<tfoot>
 		    				<tr>
@@ -338,8 +312,8 @@ function pagechange(pagenumber) {
 				<!-- .search -->
 				<div class="search">
 					<form action="" method="post">
-						<input type="search" placeholder="내용을 입력하세요"/>
-						<input type="submit" value="검색"/>
+						<input type="search" id="search_input" placeholder="내용을 입력하세요"/>
+						<input type="submit" id="search" value="검색"/>
 					</form>
 				</div>
 				<!-- /.search -->

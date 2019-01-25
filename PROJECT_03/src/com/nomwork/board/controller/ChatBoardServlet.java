@@ -75,6 +75,7 @@ public class ChatBoardServlet extends HttpServlet {
 			out.println("test");
 		}
 		
+		//--------------게시물 열개 가져오기
 		if(command.equals("selectTen")) {
 			int projectno = Integer.parseInt(request.getParameter("projectno"));
 			int pageno = Integer.parseInt(request.getParameter("pageno"));
@@ -86,9 +87,7 @@ public class ChatBoardServlet extends HttpServlet {
 				remain = 1;
 			}
 			int numofpages= (countall/10)+remain;
-			//전체게시물이 44페이지, 현재 셀렉한 페이지가 42페이지라면, 41-44만 보여줘도 되지 않을까?(인덱스 너비로는 4개겠네. numofpages-10*(numofpages/10)하면 되겠다.)
-			//현재 셀렉한 페이지가 33이라면 31-40까지 보여주면 되고.
-			
+
 			int indexno = Math.min(10, numofpages-10*((pageno-1)/10));
 			System.out.println("min number:"+indexno);
 			int[] numofpage = new int[indexno];
@@ -102,8 +101,41 @@ public class ChatBoardServlet extends HttpServlet {
 			request.setAttribute("titlelist", titlelist);
 			request.setAttribute("pageno", pageno);
 			dispatch(request, response, "ChatTitle.jsp");
+		
 			
+			
+		//----------------게시물 검색후 10개씩 가져오기
+		}if(command.equals("search_title")) {
+			
+			int projectno = Integer.parseInt(request.getParameter("projectno"));
+			int pageno = Integer.parseInt(request.getParameter("pageno"));
+			String searchtxt = "%"+request.getParameter("searchtxt")+"%";
+			System.out.println(projectno+"/"+pageno+"/"+searchtxt);
+			
+			//페이지 숫자 정하는 파트
+			int countall = dao.searchcountall(projectno, searchtxt);
+			int remain = 0;
+			if(countall%10 > 0) {
+				remain = 1;
+			}
+			int numofpages= (countall/10)+remain;
+			
+			int indexno = Math.min(10, numofpages-10*((pageno-1)/10));
+			System.out.println("min number:"+indexno);
+			int[] numofpage = new int[indexno];
+			for(int i=0 ; i<indexno ; i++){
+				numofpage[i] = i+1+10*((pageno-1)/10);
+			}
+			
+			//페이지에 맞는 게시물 10개만 가져오는 파트
+			List<ChatBoardDto> titlelist = dao.searchTen(projectno, pageno, searchtxt);
+			request.setAttribute("numofpage", numofpage);
+			request.setAttribute("titlelist", titlelist);
+			request.setAttribute("pageno", pageno);
+			
+			dispatch(request, response, "ChatTitle.jsp");
 		}
+		
 		
 		/*if(command.equals("boardlist")) {
 			List<ChatBoardDto> list = dao.selectBoardlist();		

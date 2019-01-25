@@ -44,6 +44,26 @@
 		<result property="cno" column="CHANNELNO"/>
 		<result property="pno" column="PROJECTNO"/>
 	</resultMap>
+	
+	<!-- TEXT 테이블과 TextDto 맵핑 -->
+	<resultMap type="TextDto" id="text">
+		<result property="tno" column="TEXTNO"/>
+		<result property="userno" column="USERNO"/>
+		<result property="cno" column="CHANNELNO"/>
+		<result property="answersq" column="ANSWERSQ"/>
+		<result property="tcontent" column="TEXTCONTENT"/>
+		<result property="tip" column="TEXTIP"/>
+		<result property="ttime" column="TEXTTIME"/>
+		<result property="mno" column="MAPNO"/>
+		<result property="fno" column="FILENO"/>
+	</resultMap>
+	
+	<!-- MAPS 테이블과 MapDto 맵핑 -->
+	<resultMap type="MapDto" id="map">
+		<result property="mno" column="MAPNO"/>
+		<result property="latitude" column="LATITUDE"/>
+		<result property="longitude" column="LONGITUDE"/>
+	</resultMap>
 
 	<!-- 로그인 -->
 	<select id="login" parameterType="UserDto" resultMap="userinfo">
@@ -66,6 +86,13 @@
 		SELECT	*
 		FROM 	USERINFO
 		WHERE 	USEREMAIL=#{useremail}
+	</select>
+	
+	<!-- API 로그인시, 고유번호 찾기 -->
+	<select id="select_user_by_api" parameterType="Double" resultMap="userinfo">
+		SELECT	*
+		FROM 	USERINFO
+		WHERE 	USERNO=#{userno}
 	</select>
 	
 	<!-- 검색 유저의 프로젝트 중 가장 번호가 작은 프로젝트 검색 -->
@@ -124,18 +151,35 @@
 	WHERE   A.CHANNELNO = #{cno}
 	</select>
 	
-	<!-- 프로필 사진 바꾸기 -->
-	<update id="update_profile" parameterType="Map">
+	<!-- 맵 객체 조회 -->
+	<select id="select_map" parameterType="MapDto" resultMap="map">
+	
+		SELECT * FROM MAPS WHERE #{mno}
+		
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="update_userinfo" parameterType="UserDto">
 		UPDATE 	USERINFO
-		SET 	USERURL=#{userurl}
-		WHERE 	USEREMAIL=#{useremail}
+		SET 	USEREMAIL=#{useremail}
+				,USERPW=#{userpw}
+				,USERNAME=#{username}
+				,USERGENDER=#{usergender}
+		WHERE 	USERNO=#{userno}
 	</update>
 	
 	<!-- 회원가입 -->
-	<insert id="insert_member" parameterType="UserDto">
+	<insert id="insert_user" parameterType="UserDto">
 		INSERT INTO USERINFO(USERNO,USEREMAIL ,USERPW ,USERNAME ,USERGENDER ,USERENABLED ,USERROLE ,USERURL)
 		VALUES( 
-		USERNOSEQ.NEXTVAL
+		<choose>
+ 			<when test="userno != null">
+ 				#{userno}
+ 			</when>
+ 			<otherwise>
+ 				USERNOSEQ.NEXTVAL
+ 			</otherwise>
+ 		</choose>
 		,#{useremail}
 		,#{userpw} 
 		,#{username}
@@ -240,85 +284,163 @@
 				
 	</insert>
 	
+	<!-- 맵 테이블 생성 -->
+	<insert id="insert_map" parameterType="MapDto">
 	
+		INSERT INTO MAPS
+		VALUES(
+			MAPNOSEQ.NEXTVAL,
+			#{latitude},
+			#{longitude}
+		)
+		
+		<selectKey  keyProperty="mno" resultType="int" order="AFTER">
+   			SELECT 	MAPNOSEQ.CURRVAL
+   			FROM	DUAL
+  		</selectKey>
+		
+	</insert>
 	
+	<!-- 텍스트 테이블 생성 -->
+	<insert id="insert_text">
+	
+		<selectKey  keyProperty="tno" resultType="int" order="BEFORE">
+   			SELECT 	MAPNOSEQ.NEXTVAL
+   			FROM	DUAL
+  		</selectKey>
+	
+		INSERT INTO TEXT(TEXTNO, USERNO, CHANNELNO, ANSWERSQ, TEXTCONTENT, TEXTTIME, MAPNO, FILENO)
+		VALUES (
+			#{tno}
+			,#{userno}
+			,#{cno}
+		<choose>
+ 			<when test="answersq != 0">
+ 				,#{answersq}
+ 			</when>
+ 			<otherwise>
+ 				,0
+ 			</otherwise>
+ 		</choose>
+ 		<choose>
+ 			<when test="tcontent != null">
+ 				,#{tcontent}
+ 			</when>
+ 			<otherwise>
+ 				,NULL
+ 			</otherwise>
+ 		</choose>
+ 		,SYSDATE
+ 		<choose>
+ 			<when test="mno != 0">
+ 				,#{mno}
+ 			</when>
+ 			<otherwise>
+ 				,NULL
+ 			</otherwise>
+ 		</choose>
+ 		<choose>
+ 			<when test="fno != 0">
+ 				,#{fno}
+ 			</when>
+ 			<otherwise>
+ 				,NULL
+ 			</otherwise>
+ 		</choose>
+		)
+	
+	</insert>
+
 <!-- 게시판 관련 기능 start -->
-	<!-- 게시판dto -->
-	<resultMap type="ChatBoardDto" id="myMap">
-		<result property="titleno" column="TITLENO"/>
-		<result property="userno" column="USERNO"/>
-		<result property="projectno" column="PROJECTNO"/>
-		<result property="title" column="TITLE"/>
-		<result property="content" column="CONTENT"/>
-		<result property="delflag" column="DELFLAG"/>
-		<result property="regdate" column="REGDATE"/>
-		<result property="mapno" column="MAPNO"/>
-		<result property="fileno" column="FILENO"/>
-	</resultMap>
-	
-	<!-- 파일dto -->
-	<resultMap type="FileDBDto" id="myFile">
-		<result property="fileno" column="FILENO"/>
-		<result property="files" column="FILES"/>
-		<result property="filetitle" column="FILETITLE"/>
-	</resultMap>
-	
-	<!-- 게시판 전체출력 -->
-	<select id="selectprojectno" resultType="ChatBoardDto">
-		SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND PROJECTNO = #{projectno}
-	</select>
-	
-	<!-- 게시판 페이지 번호 출력 -->
-	<select id="selectcountall" parameterType="int" resultType="int">
-		SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno}
-	</select>
-	
-	<!-- 게시판 내 게시물 10개 출력 -->
-	<select id="selectten" resultType="ChatBoardDto" parameterType="ChatBoardDto">
-		SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE 
-		WHERE DELFLAG='N' AND PROJECTNO = 1 AND
-		TITLENO BETWEEN (SELECT GREATEST(MAX(titleno)-(#{titleno}*10)+1,1) FROM CHATTITLE) AND (SELECT MAX(titleno)-(#{titleno}-1)*10 FROM CHATTITLE)
-		ORDER BY TITLENO DESC
-	</select>
-	
-	<!-- 게시판 입력(삭제예정)-->
-	<insert id="insertcontent" parameterType="ChatBoardDto">
-		INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, 'TITLE',  #{content}, SYSDATE)
-	</insert>
-	
-	<!-- 게시판 전체출력(삭제예정) -->
-	<select id="selectBoardlist" resultType="ChatBoardDto">
-		SELECT TITLENO, USERNO, PROJECTNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N'
-	</select>
-	
-	<!-- 게시물 1개 출력 -->
-	<select id="selectBoardone" resultType="ChatBoardDto">	
-		SELECT USERNO, TITLE, CONTENT, REGDATE, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND TITLENO = #{titleno}
-	</select>
-	
-	<!-- 게시물 입력 -->
-	<insert id="writeBoard" parameterType="ChatBoardDto">
-		INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, #{title},  #{content}, 'N', SYSDATE, null, #{fileno})
-	</insert>
-	
-	<!-- 게시물 삭제 -->
-	<update id="multiDelete" parameterType="map">
-		UPDATE CHATTITLE SET DELFLAG = 'Y' WHERE TITLENO IN <foreach collection="titlenos" item="titleno" open="(" separator="," close=")">#{titleno}</foreach>
-	</update>
-	
-	<!-- 파일정보 입력 -->
-	<insert id="writeBoardfile" parameterType="FileDBDto">
-		INSERT INTO FILEDB VALUES(FILENOSEQ.NEXTVAL, #{files},#{filetitle})
-	</insert>
-	
-	<!-- 가장 최신에 업데이트 된 파일 선택 -->
-	<select id="selectBoardfileno" resultType="int">
-		SELECT MAX(FILENO) FROM FILEDB
-	</select>
-	
-	<select id="selectBoardfileone" resultType="FileDBDto">
-		SELECT FILETITLE FROM FILEDB WHERE FILENO = #{fileno}
-	</select>
-	
-	
+   <!-- 게시판dto -->
+   <resultMap type="ChatBoardDto" id="myMap">
+      <result property="titleno" column="TITLENO"/>
+      <result property="userno" column="USERNO"/>
+      <result property="projectno" column="PROJECTNO"/>
+      <result property="title" column="TITLE"/>
+      <result property="content" column="CONTENT"/>
+      <result property="delflag" column="DELFLAG"/>
+      <result property="regdate" column="REGDATE"/>
+      <result property="mapno" column="MAPNO"/>
+      <result property="fileno" column="FILENO"/>
+   </resultMap>
+   
+   <!-- 파일dto -->
+   <resultMap type="FileDBDto" id="myFile">
+      <result property="fileno" column="FILENO"/>
+      <result property="files" column="FILES"/>
+      <result property="filetitle" column="FILETITLE"/>
+   </resultMap>
+   
+   <!-- 게시판 전체출력 -->
+   <select id="selectprojectno" resultType="ChatBoardDto">
+      SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND PROJECTNO = #{projectno}
+   </select>
+   
+   <!-- 게시판 페이지 번호 출력 -->
+   <select id="selectcountall" parameterType="int" resultType="int">
+      SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno}
+   </select>
+   
+   <!-- 게시판 내 게시물 10개 출력 -->
+   <select id="selectten" resultType="ChatBoardDto" parameterType="ChatBoardDto">
+      SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE 
+      WHERE DELFLAG='N' AND PROJECTNO = 1 AND
+      TITLENO BETWEEN (SELECT GREATEST(MAX(titleno)-(#{titleno}*10)+1,1) FROM CHATTITLE) AND (SELECT MAX(titleno)-(#{titleno}-1)*10 FROM CHATTITLE)
+      ORDER BY TITLENO DESC
+   </select>
+   
+    <!-- 게시판 페이지 번호 검색 -->
+    <select id="searchcountall" parameterType="ChatBoardDto" resultType="int">
+      SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno} AND CONTENT = #{content}
+   </select>
+   
+   <!-- 게시판 내 게시물 10개 검색 -->
+   <select id="searchten" resultType="ChatBoardDto" parameterType="ChatBoardDto">
+      SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE 
+      WHERE DELFLAG='N' AND PROJECTNO = 1 AND
+      TITLENO BETWEEN (SELECT GREATEST(MAX(titleno)-(#{titleno}*10)+1,1) FROM CHATTITLE) AND (SELECT MAX(titleno)-(#{titleno}-1)*10 FROM CHATTITLE)
+      ORDER BY TITLENO DESC
+   </select>
+   
+   
+   <!-- 게시판 입력(삭제예정)-->
+   <insert id="insertcontent" parameterType="ChatBoardDto">
+      INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, 'TITLE',  #{content}, SYSDATE)
+   </insert>
+   
+   <!-- 게시판 전체출력(삭제예정) -->
+   <select id="selectBoardlist" resultType="ChatBoardDto">
+      SELECT TITLENO, USERNO, PROJECTNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N'
+   </select>
+   
+   <!-- 게시물 1개 출력 -->
+   <select id="selectBoardone" resultType="ChatBoardDto">   
+      SELECT USERNO, TITLE, CONTENT, REGDATE, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND TITLENO = #{titleno}
+   </select>
+   
+   <!-- 게시물 입력 -->
+   <insert id="writeBoard" parameterType="ChatBoardDto">
+      INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, #{title},  #{content}, 'N', SYSDATE, null, #{fileno})
+   </insert>
+   
+   <!-- 게시물 삭제 -->
+   <update id="multiDelete" parameterType="map">
+      UPDATE CHATTITLE SET DELFLAG = 'Y' WHERE TITLENO IN <foreach collection="titlenos" item="titleno" open="(" separator="," close=")">#{titleno}</foreach>
+   </update>
+   
+   <!-- 파일정보 입력 -->
+   <insert id="writeBoardfile" parameterType="FileDBDto">
+      INSERT INTO FILEDB VALUES(FILENOSEQ.NEXTVAL, #{files},#{filetitle})
+   </insert>
+   
+   <!-- 가장 최신에 업데이트 된 파일 선택 -->
+   <select id="selectBoardfileno" resultType="int">
+      SELECT MAX(FILENO) FROM FILEDB
+   </select>
+   
+   <select id="selectBoardfileone" resultType="FileDBDto">
+      SELECT FILETITLE FROM FILEDB WHERE FILENO = #{fileno}
+   </select>
+   
 </mapper>

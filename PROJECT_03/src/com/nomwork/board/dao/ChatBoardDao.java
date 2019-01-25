@@ -30,6 +30,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		return result;
 		
 	}
+	//게시판 페이징
 	public int selectcountall(int projectno) {
 		int countall = 0;
 		session = getSqlSessionFactory().openSession(true);
@@ -39,14 +40,40 @@ public class ChatBoardDao extends SqlMapConfig{
 		return countall;
 		
 	}
-	
+	//게시판 게시물 10개
 	public List<ChatBoardDto> selectTen(int projectno, int pageno){
 		List<ChatBoardDto> list = null;
 		session = getSqlSessionFactory().openSession(true);
 		ChatBoardDto dto = new ChatBoardDto();
 		dto.setProjectno(projectno);
 		dto.setTitleno(pageno);
-		list = session.selectList(namespace + "selectten", dto);
+		list = session.selectList("selectten", dto);
+		return list;
+	}
+	//검색 후 페이징
+	public int searchcountall(int projectno, String content) {
+		int countall = 0;
+		session = getSqlSessionFactory().openSession(true);
+		System.out.println(session);
+		ChatBoardDto dto = new ChatBoardDto();
+		dto.setProjectno(projectno);
+		dto.setContent(content);
+		countall = session.selectOne("searchcountall", dto );
+		System.out.println(countall);
+		
+		return countall;
+		
+	}
+	//검색 후 게시물 10개씩
+	public List<ChatBoardDto> searchTen(int projectno, int pageno, String content){
+		List<ChatBoardDto> list = null;
+		session = getSqlSessionFactory().openSession(true);
+		ChatBoardDto dto = new ChatBoardDto();
+		dto.setProjectno(projectno);
+		dto.setTitleno(pageno);
+		dto.setContent(content);
+		
+		list = session.selectList("searchten", dto);
 		return list;
 	}
 	//end of 승혜파트--------------
@@ -58,7 +85,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		
 		session = getSqlSessionFactory().openSession(true);
 		
-		list = session.selectList(namespace + "selectBoardlist");
+		list = session.selectList("selectBoardlist");
 		
 		return list;
 	}
@@ -67,7 +94,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		ChatBoardDto res = null;
 		
 		session = getSqlSessionFactory().openSession(true);
-		res = session.selectOne(namespace + "selectBoardone", titleno);
+		res = session.selectOne("selectBoardone", titleno);
 		
 		return res;
 	}
@@ -76,7 +103,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		int res = 0;
 		
 		session = getSqlSessionFactory().openSession(true);
-		res = session.insert(namespace + "writeBoard", dto);
+		res = session.insert("writeBoard", dto);
 		
 		return res;
 	}
@@ -89,7 +116,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		
 		try {
 			session = getSqlSessionFactory().openSession(true);
-			count = session.delete(namespace+"multiDelete", map);
+			count = session.delete("multiDelete", map);
 			
 			if(count==titleno.length) {
 				session.commit();
@@ -107,7 +134,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		int res = 0;
 		
 		session = getSqlSessionFactory().openSession(true);
-		res = session.insert(namespace + "writeBoardfile", dto);
+		res = session.insert("writeBoardfile", dto);
 		
 		return res;
 	}
@@ -116,7 +143,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		int res = 0;
 		
 		session = getSqlSessionFactory().openSession(true);
-		res = session.selectOne(namespace + "selectBoardfileno");
+		res = session.selectOne("selectBoardfileno");
 		
 		return res;
 	}
@@ -125,7 +152,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		FileDBDto res = null;
 		
 		session = getSqlSessionFactory().openSession(true);
-		res = session.selectOne(namespace + "selectBoardfileone", fileno);
+		res = session.selectOne("selectBoardfileone", fileno);
 		
 		return res;
 	}
