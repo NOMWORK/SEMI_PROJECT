@@ -46,7 +46,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		session = getSqlSessionFactory().openSession(true);
 		ChatBoardDto dto = new ChatBoardDto();
 		dto.setProjectno(projectno);
-		dto.setTitleno(pageno);
+		dto.setBoardno(pageno);
 		list = session.selectList("selectten", dto);
 		return list;
 	}
@@ -57,7 +57,7 @@ public class ChatBoardDao extends SqlMapConfig{
 		System.out.println(session);
 		ChatBoardDto dto = new ChatBoardDto();
 		dto.setProjectno(projectno);
-		dto.setContent(content);
+		dto.setBoardcontent(content);
 		countall = session.selectOne("searchcountall", dto );
 		System.out.println(countall);
 		
@@ -70,8 +70,8 @@ public class ChatBoardDao extends SqlMapConfig{
 		session = getSqlSessionFactory().openSession(true);
 		ChatBoardDto dto = new ChatBoardDto();
 		dto.setProjectno(projectno);
-		dto.setTitleno(pageno);
-		dto.setContent(content);
+		dto.setBoardno(pageno);
+		dto.setBoardcontent(content);
 		
 		list = session.selectList("searchten", dto);
 		return list;

@@ -11,6 +11,8 @@
 		<typeAlias type="com.nomwork.channel.dto.Channel_CreateDto" alias="Channel_CreateDto"/>
 		<typeAlias type="com.nomwork.text.dto.TextDto" alias="TextDto"/>
 		<typeAlias type="com.nomwork.map.dto.MapDto" alias="MapDto"/>
+		<typeAlias type="com.nomwork.board.dto.ChatBoardDto" alias="ChatBoardDto"/>
+		<typeAlias type="com.nomwork.board.dto.FileDBDto" alias="FileDBDto"/>
 	</typeAliases>
 
 	<environments default="development">

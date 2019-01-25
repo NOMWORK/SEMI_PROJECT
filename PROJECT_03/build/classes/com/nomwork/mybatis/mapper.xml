@@ -353,12 +353,12 @@
 
 <!-- 게시판 관련 기능 start -->
    <!-- 게시판dto -->
-   <resultMap type="ChatBoardDto" id="myMap">
-      <result property="titleno" column="TITLENO"/>
+   <resultMap type="ChatBoardDto" id="ChatBoardDto">
+      <result property="boardno" column="BOARDNO"/>
       <result property="userno" column="USERNO"/>
       <result property="projectno" column="PROJECTNO"/>
-      <result property="title" column="TITLE"/>
-      <result property="content" column="CONTENT"/>
+      <result property="boardtitle" column="BOARDTITLE"/>
+      <result property="boardcontent" column="BOARDCONTENT"/>
       <result property="delflag" column="DELFLAG"/>
       <result property="regdate" column="REGDATE"/>
       <result property="mapno" column="MAPNO"/>
@@ -366,81 +366,74 @@
    </resultMap>
    
    <!-- 파일dto -->
-   <resultMap type="FileDBDto" id="myFile">
+   <resultMap type="FileDBDto" id="FileDBDto">
       <result property="fileno" column="FILENO"/>
-      <result property="files" column="FILES"/>
+      <result property="files" column="FILESTREAM"/>
       <result property="filetitle" column="FILETITLE"/>
    </resultMap>
    
    <!-- 게시판 전체출력 -->
    <select id="selectprojectno" resultType="ChatBoardDto">
-      SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND PROJECTNO = #{projectno}
+      SELECT BOARDNO, USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND PROJECTNO = #{projectno}
    </select>
    
    <!-- 게시판 페이지 번호 출력 -->
    <select id="selectcountall" parameterType="int" resultType="int">
-      SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno}
+      SELECT COUNT(BOARDNO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno}
    </select>
    
    <!-- 게시판 내 게시물 10개 출력 -->
    <select id="selectten" resultType="ChatBoardDto" parameterType="ChatBoardDto">
-      SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE 
-      WHERE DELFLAG='N' AND PROJECTNO = 1 AND
-      TITLENO BETWEEN (SELECT GREATEST(MAX(titleno)-(#{titleno}*10)+1,1) FROM CHATTITLE) AND (SELECT MAX(titleno)-(#{titleno}-1)*10 FROM CHATTITLE)
-      ORDER BY TITLENO DESC
+	SELECT rn, BOARDNO, USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, MAPNO, FILENO FROM 
+	(SELECT ROWNUM as rn, BOARDNO, USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, MAPNO, FILENO FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno}
+	ORDER BY BOARDNO) WHERE rn BETWEEN 
+	(SELECT GREATEST(MAX(rn)-(#{boardno}*10)+1,1) FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno})) 
+	AND (SELECT MAX(rn)-(#{boardno}-1)*10 FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno}))
+	ORDER BY rn DESC;
    </select>
    
     <!-- 게시판 페이지 번호 검색 -->
     <select id="searchcountall" parameterType="ChatBoardDto" resultType="int">
-      SELECT COUNT(TITLENO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno} AND CONTENT = #{content}
+      SELECT COUNT(BOARDNO) FILENO FROM CHATTITLE WHERE PROJECTNO = #{projectno} AND BOARDCONTENT = #{boardcontent}
    </select>
    
    <!-- 게시판 내 게시물 10개 검색 -->
    <select id="searchten" resultType="ChatBoardDto" parameterType="ChatBoardDto">
-      SELECT TITLENO, USERNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE 
-      WHERE DELFLAG='N' AND PROJECTNO = 1 AND
-      TITLENO BETWEEN (SELECT GREATEST(MAX(titleno)-(#{titleno}*10)+1,1) FROM CHATTITLE) AND (SELECT MAX(titleno)-(#{titleno}-1)*10 FROM CHATTITLE)
-      ORDER BY TITLENO DESC
-   </select>
-   
-   
-   <!-- 게시판 입력(삭제예정)-->
-   <insert id="insertcontent" parameterType="ChatBoardDto">
-      INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, 'TITLE',  #{content}, SYSDATE)
-   </insert>
-   
-   <!-- 게시판 전체출력(삭제예정) -->
-   <select id="selectBoardlist" resultType="ChatBoardDto">
-      SELECT TITLENO, USERNO, PROJECTNO, TITLE, CONTENT, REGDATE, MAPNO, FILENO FROM CHATTITLE WHERE DELFLAG='N'
+	SELECT rn, BOARDNO, USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, MAPNO, FILENO FROM 
+	(SELECT ROWNUM as rn, BOARDNO, USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, MAPNO, FILENO FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno}
+	AND BOARDCONTENT LIKE #{boardcontent} ORDER BY BOARDNO) WHERE rn BETWEEN
+	(SELECT GREATEST(MAX(rn)-(#{boardno}*10)+1,1) FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno} AND BOARDCONTENT LIKE #{boardcontent})) 
+	AND (SELECT MAX(rn)-(#{boardno}-1)*10 FROM (SELECT ROWNUM as rn FROM BOARD WHERE DELFLAG = 'N' AND PROJECTNO = #{projectno} AND BOARDCONTENT LIKE #{boardcontent}))
+	ORDER BY rn DESC;
    </select>
    
    <!-- 게시물 1개 출력 -->
    <select id="selectBoardone" resultType="ChatBoardDto">   
-      SELECT USERNO, TITLE, CONTENT, REGDATE, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND TITLENO = #{titleno}
+      SELECT USERNO, BOARDTITLE, BOARDCONTENT, REGDATE, FILENO FROM CHATTITLE WHERE DELFLAG='N' AND BOARDNO = #{boardno}
    </select>
    
    <!-- 게시물 입력 -->
    <insert id="writeBoard" parameterType="ChatBoardDto">
-      INSERT INTO CHATTITLE VALUES(TITLENOSEQ.NEXTVAL, #{userno}, 1, #{title},  #{content}, 'N', SYSDATE, null, #{fileno})
+      INSERT INTO BOARD VALUES(BOARDNOSEQ.NEXTVAL, #{userno}, 1, #{title},  #{boardcontent}, 'N', SYSDATE, null, #{fileno})
    </insert>
    
    <!-- 게시물 삭제 -->
    <update id="multiDelete" parameterType="map">
-      UPDATE CHATTITLE SET DELFLAG = 'Y' WHERE TITLENO IN <foreach collection="titlenos" item="titleno" open="(" separator="," close=")">#{titleno}</foreach>
+      UPDATE BOARD SET DELFLAG = 'Y' WHERE BOARDTITLE IN <foreach collection="boardnos" item="boardno" open="(" separator="," close=")">#{boardno}</foreach>
    </update>
    
    <!-- 파일정보 입력 -->
    <insert id="writeBoardfile" parameterType="FileDBDto">
-      INSERT INTO FILEDB VALUES(FILENOSEQ.NEXTVAL, #{files},#{filetitle})
+      INSERT INTO FILES VALUES(FILENOSEQ.NEXTVAL, #{files},#{filetitle})
    </insert>
    
    <!-- 가장 최신에 업데이트 된 파일 선택 -->
    <select id="selectBoardfileno" resultType="int">
-      SELECT MAX(FILENO) FROM FILEDB
+      SELECT MAX(FILENO) FROM FILES
    </select>
    
    <select id="selectBoardfileone" resultType="FileDBDto">
-      SELECT FILETITLE FROM FILEDB WHERE FILENO = #{fileno}
+      SELECT FILETITLE FROM FILES WHERE FILENO = #{fileno}
    </select>
    
 </mapper>

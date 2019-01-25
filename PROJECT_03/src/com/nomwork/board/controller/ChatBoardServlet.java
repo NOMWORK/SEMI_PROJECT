@@ -60,7 +60,7 @@ public class ChatBoardServlet extends HttpServlet {
 			String inputtext = request.getParameter("inputtext");
 			ChatBoardDto dto = new ChatBoardDto();
 			dto.setUserno(1);
-			dto.setContent(inputtext);
+			dto.setBoardcontent(inputtext);
 			int result = dao.insertContent(dto);
 			out.println(inputtext+result);
 		}
@@ -156,8 +156,8 @@ public class ChatBoardServlet extends HttpServlet {
 			//obj.put("fileno", dto.getFileno());
 			obj.put("userno",dto.getUserno());
 			obj.put("regdate", dto.getRegdate().toString());	
-			obj.put("content", dto.getContent());
-			obj.put("title", dto.getTitle());
+			obj.put("content", dto.getBoardcontent());
+			obj.put("title", dto.getBoardtitle());
 
 			pw.println(obj.toJSONString());
 
@@ -210,8 +210,8 @@ public class ChatBoardServlet extends HttpServlet {
 		
 				ChatBoardDto dto = new ChatBoardDto();
 				dto.setUserno(user);
-				dto.setTitle(title);
-				dto.setContent(content);
+				dto.setBoardtitle(title);
+				dto.setBoardcontent(content);
 				dto.setFileno(0);
 				if(resfile>0) {
 					resfile2 = dao.selectBoardfileno();
